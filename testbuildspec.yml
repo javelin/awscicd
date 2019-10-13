@@ -1,0 +1,19 @@
+version: 0.1
+env:
+  variables:
+    LAMBDA_NAME: "awscicd"
+    BUCKET_NAME: "javelinlambda"
+    TEST_BUCKET_NAME: "javelintestlambda"
+    S3_PATH: "awscicd"
+phases:  
+  install:
+    runtime-versions:
+        python: 3.7
+    commands:
+      - apt-get update
+      - apt-get install zip
+  build:
+    commands:
+      - cd $LAMBDA_NAME; zip -r ../$LAMBDA_NAME.zip *
+      - cd ..
+      - aws s3 cp $LAMBDA_NAME.zip s3://$TEST_BUCKET_NAME/$S3_PATH/$LAMBDA_NAME.zip

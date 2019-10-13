@@ -1,0 +1,15 @@
+version: 0.1
+env:
+  variables:
+    LAMBDA_NAME: "awscicd"
+    BUCKET_NAME: "javelinlambda"
+    S3_PATH: "awscicd"
+phases:  
+  install:
+    runtime-versions:
+        python: 3.7
+    commands:
+      - apt-get update
+  build:
+    commands:
+      - aws lambda update-function-code --function-name $LAMBDA_NAME --s3-bucket $BUCKET_NAME --s3-key $S3_PATH/$LAMBDA_NAME.zip --no-publish
